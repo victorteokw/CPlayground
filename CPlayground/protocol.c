@@ -12,21 +12,21 @@ static PyObject *Protocol_new(PyTypeObject *type, PyObject *args, PyObject *kwds
     return (PyObject *)self;
 }
 
+static int Protocol_init(Protocol *self, PyObject *args, PyObject *kwds) {
+    int result = 0;
+    if(!PyArg_ParseTuple(args, "O", &self->app)) {
+        result = -1;
+    }
+    Py_XINCREF(self->app);
+    return result;
+}
+
 static void Protocol_dealloc(Protocol *self) {
     Py_XDECREF(self->app);
     Py_XDECREF(self->transport);
     Py_XDECREF(self->req);
     Request_dealloc(&(self->request));
     Py_TYPE(self)->tp_free((PyObject *)self);
-}
-
-static int Protocol_init(Protocol *self, PyObject *args, PyObject *kwds) {
-    int result = 0;
-    if(!PyArg_ParseTuple(args, "O", &self->app)) {
-        result = -1;
-    }
-    Py_INCREF(self->app);
-    return result;
 }
 
 static PyObject *Protocol_connection_made(Protocol *self, PyObject *transport) {
@@ -48,71 +48,42 @@ static PyObject *Protocol_data_received(Protocol *self, PyObject *data) {
     RequestParsingState state = Request_receive(&(self->request), content, len);
     Py_XDECREF(data);
     if (state == RequestParsingStateDone) {
-
+        
+        // transport.write(bytes)
+        PyObject *transport_write = PyObject_GetAttrString(self->transport, "write");
+        PyObject_CallOneArg(transport_write, bytes);
+        Py_DECREF(transport_write);
+        // transport.close()
+        PyObject *transport_close = PyObject_GetAttrString(self->transport, "close");
+        PyObject_CallNoArgs(transport_close);
+        Py_DECREF(transport_close);
     }
     Py_RETURN_NONE;
 }
 
-// static PyMethodDef Protocol_methods[] = {
-//   {"connection_made", (PyCFunction)Protocol_connection_made, METH_O, ""},
-//   {"connection_lost", (PyCFunction)Protocol_connection_lost, METH_VARARGS, ""},
-//   {"data_received", (PyCFunction)Protocol_data_received, METH_O, ""},
-//   {"pipeline_cancel", (PyCFunction)Protocol_pipeline_cancel, METH_NOARGS, ""},
-// #ifdef PARSER_STANDALONE
-//   {"on_headers", (PyCFunction)Protocol_on_headers, METH_VARARGS, ""},
-//   {"on_body", (PyCFunction)Protocol_on_body, METH_VARARGS, ""},
-//   {"on_error", (PyCFunction)Protocol_on_error, METH_VARARGS, ""},
-// #endif
-//   {NULL}
-// };
-
+static PyMethodDef Protocol_methods[] = {
+    {"connection_made", (PyCFunction)Protocol_connection_made, METH_O, ""},
+    {"connection_lost", (PyCFunction)Protocol_connection_lost, METH_VARARGS, ""},
+    {"data_received", (PyCFunction)Protocol_data_received, METH_O, ""},
+    {NULL}
+};
 
 static PyTypeObject ProtocolType = {
-  PyVarObject_HEAD_INIT(NULL, 0)
-  "protocol.Protocol",       /* tp_name */
-  sizeof(Protocol),          /* tp_basicsize */
-  0,                         /* tp_itemsize */
-  (destructor)Protocol_dealloc, /* tp_dealloc */
-  0,                         /* tp_print */
-  0,                         /* tp_getattr */
-  0,                         /* tp_setattr */
-  0,                         /* tp_reserved */
-  0,                         /* tp_repr */
-  0,                         /* tp_as_number */
-  0,                         /* tp_as_sequence */
-  0,                         /* tp_as_mapping */
-  0,                         /* tp_hash  */
-  0,                         /* tp_call */
-  0,                         /* tp_str */
-  0,                         /* tp_getattro */
-  0,                         /* tp_setattro */
-  0,                         /* tp_as_buffer */
-  Py_TPFLAGS_DEFAULT,        /* tp_flags */
-  "Protocol",                /* tp_doc */
-  0,                         /* tp_traverse */
-  0,                         /* tp_clear */
-  0,                         /* tp_richcompare */
-  0,                         /* tp_weaklistoffset */
-  0,                         /* tp_iter */
-  0,                         /* tp_iternext */
-  Protocol_methods,          /* tp_methods */
-  0,                         /* tp_members */
-  Protocol_getset,           /* tp_getset */
-  0,                         /* tp_base */
-  0,                         /* tp_dict */
-  0,                         /* tp_descr_get */
-  0,                         /* tp_descr_set */
-  0,                         /* tp_dictoffset */
-  (initproc)Protocol_init,   /* tp_init */
-  0,                         /* tp_alloc */
-  Protocol_new,              /* tp_new */
+    PyVarObject_HEAD_INIT(NULL, 0)
+    .tp_name = "protocol.Protocol",
+    .tp_basicsize = sizeof(Protocol),
+    .tp_dealloc = (destructor)Protocol_dealloc,
+    .tp_flags = Py_TPFLAGS_DEFAULT,
+    .tp_methods = Protocol_methods,
+    .tp_new = Protocol_new,
+    .tp_init = (initproc)Protocol_init
 };
 
 
-static PyModuleDef cprotocol = {
-  PyModuleDef_HEAD_INIT,
-  "protocol",
-  "protocol",
-  -1,
-  NULL, NULL, NULL, NULL, NULL
+static PyModuleDef protocol = {
+    PyModuleDef_HEAD_INIT,
+    "protocol",
+    "protocol",
+    -1,
+    NULL, NULL, NULL, NULL, NULL
 };

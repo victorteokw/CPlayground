@@ -14,6 +14,11 @@
 		57093318276DB5FD00441299 /* context.c in Sources */ = {isa = PBXBuildFile; fileRef = 57093317276DB5FD00441299 /* context.c */; };
 		5709331C276DCAE200441299 /* middleware.c in Sources */ = {isa = PBXBuildFile; fileRef = 5709331B276DCAE200441299 /* middleware.c */; };
 		5709331F276DCB6900441299 /* response.c in Sources */ = {isa = PBXBuildFile; fileRef = 5709331E276DCB6900441299 /* response.c */; };
+		57093322276DF26400441299 /* ctx.c in Sources */ = {isa = PBXBuildFile; fileRef = 57093321276DF26400441299 /* ctx.c */; };
+		57093325276DF27200441299 /* req.c in Sources */ = {isa = PBXBuildFile; fileRef = 57093324276DF27200441299 /* req.c */; };
+		57093328276DF27A00441299 /* res.c in Sources */ = {isa = PBXBuildFile; fileRef = 57093327276DF27A00441299 /* res.c */; };
+		5709332B276DF28100441299 /* hashmap.c in Sources */ = {isa = PBXBuildFile; fileRef = 5709332A276DF28100441299 /* hashmap.c */; };
+		5709332E276DF28B00441299 /* state.c in Sources */ = {isa = PBXBuildFile; fileRef = 5709332D276DF28B00441299 /* state.c */; };
 		570C4A67276B0CBA00B7B633 /* request.c in Sources */ = {isa = PBXBuildFile; fileRef = 570C4A66276B0CBA00B7B633 /* request.c */; };
 		57AAFD022765E91000BBAB4F /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 57AAFD012765E91000BBAB4F /* main.c */; };
 /* End PBXBuildFile section */
@@ -46,6 +51,16 @@
 		5709331B276DCAE200441299 /* middleware.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = middleware.c; sourceTree = "<group>"; };
 		5709331D276DCB6900441299 /* response.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = response.h; sourceTree = "<group>"; };
 		5709331E276DCB6900441299 /* response.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = response.c; sourceTree = "<group>"; };
+		57093320276DF26400441299 /* ctx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ctx.h; sourceTree = "<group>"; };
+		57093321276DF26400441299 /* ctx.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ctx.c; sourceTree = "<group>"; };
+		57093323276DF27200441299 /* req.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = req.h; sourceTree = "<group>"; };
+		57093324276DF27200441299 /* req.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = req.c; sourceTree = "<group>"; };
+		57093326276DF27A00441299 /* res.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = res.h; sourceTree = "<group>"; };
+		57093327276DF27A00441299 /* res.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = res.c; sourceTree = "<group>"; };
+		57093329276DF28100441299 /* hashmap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hashmap.h; sourceTree = "<group>"; };
+		5709332A276DF28100441299 /* hashmap.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = hashmap.c; sourceTree = "<group>"; };
+		5709332C276DF28B00441299 /* state.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = state.h; sourceTree = "<group>"; };
+		5709332D276DF28B00441299 /* state.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = state.c; sourceTree = "<group>"; };
 		570C4A65276B0CBA00B7B633 /* request.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = request.h; sourceTree = "<group>"; };
 		570C4A66276B0CBA00B7B633 /* request.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = request.c; sourceTree = "<group>"; };
 		57AAFCFE2765E91000BBAB4F /* CPlayground */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CPlayground; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -84,21 +99,31 @@
 			children = (
 				570C4A65276B0CBA00B7B633 /* request.h */,
 				570C4A66276B0CBA00B7B633 /* request.c */,
-				5709330A276DB14500441299 /* protocol.h */,
-				5709330B276DB14500441299 /* protocol.c */,
+				57093323276DF27200441299 /* req.h */,
+				57093324276DF27200441299 /* req.c */,
+				5709331D276DCB6900441299 /* response.h */,
+				5709331E276DCB6900441299 /* response.c */,
+				57093326276DF27A00441299 /* res.h */,
+				57093327276DF27A00441299 /* res.c */,
+				57093329276DF28100441299 /* hashmap.h */,
+				5709332A276DF28100441299 /* hashmap.c */,
+				5709332C276DF28B00441299 /* state.h */,
+				5709332D276DF28B00441299 /* state.c */,
 				57AAFD012765E91000BBAB4F /* main.c */,
 				5709330D276DB2BE00441299 /* matcher.h */,
 				5709330E276DB2BE00441299 /* matcher.c */,
-				57093310276DB2DA00441299 /* app.h */,
-				57093311276DB2DA00441299 /* app.c */,
 				57093313276DB4EB00441299 /* handler.h */,
 				57093314276DB4EB00441299 /* handler.c */,
-				57093316276DB5FD00441299 /* context.h */,
-				57093317276DB5FD00441299 /* context.c */,
 				5709331A276DCAE200441299 /* middleware.h */,
 				5709331B276DCAE200441299 /* middleware.c */,
-				5709331D276DCB6900441299 /* response.h */,
-				5709331E276DCB6900441299 /* response.c */,
+				57093316276DB5FD00441299 /* context.h */,
+				57093317276DB5FD00441299 /* context.c */,
+				57093320276DF26400441299 /* ctx.h */,
+				57093321276DF26400441299 /* ctx.c */,
+				57093310276DB2DA00441299 /* app.h */,
+				57093311276DB2DA00441299 /* app.c */,
+				5709330A276DB14500441299 /* protocol.h */,
+				5709330B276DB14500441299 /* protocol.c */,
 				57093319276DC14E00441299 /* thunderlight.h */,
 			);
 			path = CPlayground;
@@ -161,15 +186,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57093328276DF27A00441299 /* res.c in Sources */,
+				57093325276DF27200441299 /* req.c in Sources */,
 				5709330C276DB14500441299 /* protocol.c in Sources */,
 				57AAFD022765E91000BBAB4F /* main.c in Sources */,
 				57093315276DB4EB00441299 /* handler.c in Sources */,
 				5709331C276DCAE200441299 /* middleware.c in Sources */,
 				5709330F276DB2BE00441299 /* matcher.c in Sources */,
+				5709332E276DF28B00441299 /* state.c in Sources */,
+				5709332B276DF28100441299 /* hashmap.c in Sources */,
 				57093318276DB5FD00441299 /* context.c in Sources */,
 				570C4A67276B0CBA00B7B633 /* request.c in Sources */,
 				5709331F276DCB6900441299 /* response.c in Sources */,
 				57093312276DB2DA00441299 /* app.c in Sources */,
+				57093322276DF26400441299 /* ctx.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

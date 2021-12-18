@@ -9,9 +9,9 @@ void Handler_type_py_init(Handler *self, PyObject *handle) {
     self->type = HandlerTypePython;
     self->c_fun = NULL;
     self->py_fun = handle;
-    Py_INCREF(handle);
+    Py_XINCREF(handle);
 }
 
 void Handler_dealloc(Handler *self) {
-    Py_DECREF(self->py_fun);
+    Py_XDECREF(self->py_fun);
 }

@@ -14,6 +14,7 @@ void App_init(App *self) {
     MatcherList_init(&(self->posts));
     MatcherList_init(&(self->patches));
     MatcherList_init(&(self->deletes));
+    MiddlewareList_init(&(self->middlewares));
 }
 
 void _App_route(App *self, char *route, void (*handle)(Context *), MatcherList *matcher_list) {
@@ -40,4 +41,12 @@ void App_delete(App *self, char *route, void (*handle)(Context *)) {
     _App_route(self, route, handle, &(self->deletes));
 }
 
+void App_use(App *self, void (*middleware)(Context *, PyObject *)) {
+    Middleware middleware_object;
+    Middleware_type_c_init(&middleware_object, middleware);
+    MiddlewareList_append(&(self->middlewares), middleware_object);
+}
 
+void App_prepare(App *self) {
+    
+}

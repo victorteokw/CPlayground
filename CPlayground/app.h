@@ -7,6 +7,7 @@ extern "C" {
 #include <Python.h>
 #include "matcher.h"
 #include "context.h"
+#include "middleware.h"
 
 
 typedef struct {
@@ -15,7 +16,7 @@ typedef struct {
     MatcherList posts;
     MatcherList patches;
     MatcherList deletes;
-//    MiddlewareList middlewares;
+    MiddlewareList middlewares;
 } App;
 
 static PyObject *App_new(PyTypeObject *type, PyObject *args, PyObject *kwds);
@@ -23,11 +24,18 @@ static PyObject *App_new(PyTypeObject *type, PyObject *args, PyObject *kwds);
 void App_init(App* self);
 
 void App_get(App *self, char *route, void (*handle)(Context *));
+
 void App_post(App *self, char *route, void (*handle)(Context *));
+
 void App_patch(App *self, char *route, void (*handle)(Context *));
+
 void App_delete(App *self, char *route, void (*handle)(Context *));
 
 void App_use(App *self, void (*middleware)(Context *, PyObject *));
+
+void App_prepare(App *self);
+
+void App_
 
 #ifdef __cplusplus
 }
