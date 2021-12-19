@@ -26,24 +26,20 @@ void Request_init(Request *self) {
     // parser
     self->parser_pos = self->buffer_start;
     self->parser_location = RequestParserLocationMethod;
+    self->parser_header_location = RequestParserHeaderLocationName;
     self->exp_body_len = 0;
     // data
     self->method = self->buffer_start;
     self->method_len = 0;
     self->path = NULL;
     self->path_len = 0;
-    self->path_offset = 0;
     self->query = NULL;
     self->query_len = 0;
-    self->query_offset = 0;
     self->version = NULL;
     self->version_len = 0;
-    self->version_offset = 0;
-    self->parser_header_location = RequestParserHeaderLocationName;
     self->header_num = 1;
     self->body = NULL;
     self->body_len = 0;
-    self->body_offset = 0;
 }
 
 void Request_dealloc(Request *self) {
@@ -52,23 +48,10 @@ void Request_dealloc(Request *self) {
     }
 }
 
-void Request_sync_parser_data_pointers(Request *self) {
-    self->parser_pos = self->buffer_start + self->parser_offset;
-    self->method = self->buffer_start;
-    if (self->path == NULL) { return; }
-    self->path = self->buffer_start + self->path_offset;
-    if (self->query != NULL) {
-        self->query = self->buffer_start + self->query_offset;
-    }
-    if (self->version == NULL) { return; }
-    self->version = self->buffer_start + self->version_offset;
-    // headers how to deal with?
-    if (self->body == NULL) { return; }
-    self->body = self->buffer_start + self->body_offset;
-}
-
 RequestParsingState Request_receive(Request *self, char *content, size_t len) {
     if (len > self->buffer_capacity - self->bytes_received) {
+        // calculate pointer offsets
+        char *previous_buffer_start = self->buffer_start;
         // copy or reallocate a new buffer in memory heap if needed
         self->buffer_capacity = MAX(self->buffer_capacity * 2, self->bytes_received + len);
         if (self->buffer_start == self->inline_buffer) {
@@ -79,8 +62,19 @@ RequestParsingState Request_receive(Request *self, char *content, size_t len) {
             self->buffer_start = realloc(self->buffer_start, self->buffer_capacity);
             self->buffer_end = self->buffer_start + self->bytes_received;
         }
+        // reset pointers
+        size_t offset = self->buffer_start - previous_buffer_start;
+        self->method = self->buffer_start;
+        self->path = (self->path == NULL) ? NULL : self->path + offset;
+        self->query = (self->query == NULL) ? NULL : self->query + offset;
+        self->version = (self->version == NULL) ? NULL : self->version + offset;
+        for (size_t i = 0; i < self->header_num; i++) {
+            self->headers[i].name += offset;
+            self->headers[i].value += offset;
+        }
+        self->body = (self->body == NULL) ? NULL : self->body + offset;
         // reset parser state
-
+        self->parser_pos += offset;
     }
     // append new content to the buffer
     memcpy(self->buffer_end, content, len);
@@ -116,7 +110,6 @@ RequestParsingState _parse_from_method(Request *self) {
             *(self->parser_pos) = '\0'; // replace ws with char * terminator
             self->parser_pos++;
             self->path = self->parser_pos;
-            self->path_offset = self->parser_pos - self->buffer_start;
             self->parser_location = RequestParserLocationPath;
             goto next;
         }
@@ -136,14 +129,12 @@ RequestParsingState _parse_from_path(Request *self) {
             *(self->parser_pos) = '\0';
             self->parser_pos++;
             self->query = self->parser_pos;
-            self->query_offset = self->parser_pos - self->buffer_start;
             self->parser_location = RequestParserLocationQuery;
             goto query;
         } else if (*(self->parser_pos) == ' ') {
             *(self->parser_pos) = '\0';
             self->parser_pos++;
             self->version = self->parser_pos;
-            self->version_offset = self->parser_pos - self->buffer_start;
             self->parser_location = RequestParserLocationVersion;
             goto version;
         }

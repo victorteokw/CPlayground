@@ -10,9 +10,6 @@
 
 typedef struct {
     Request *request;
-    Req *req;
     Response *response;
-    Res *res;
     HashMap *hash_map;
-    State *state;
 } Context;

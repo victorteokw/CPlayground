@@ -1,6 +1,15 @@
-#ifndef response_h
-#define response_h
+#pragma once
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include <stdio.h>
 
-#endif /* response_h */
+typedef struct {
+    
+} Response;
+
+#ifdef __cplusplus
+}
+#endif

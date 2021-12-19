@@ -14,7 +14,7 @@ typedef struct {
     size_t name_len;
     char *value;
     size_t value_len;
-} Header;
+} RequestHeader;
 
 typedef enum {
     RequestParserLocationMethod,
@@ -48,28 +48,23 @@ typedef struct {
     char inline_buffer[INLINE_BUFFER_SIZE];
     size_t bytes_received;
     // parser
-    size_t parser_offset;
     char *parser_pos;
     RequestParserLocation parser_location;
+    RequestParserHeaderLocation parser_header_location;
     size_t exp_body_len;
     // request
     char *method;
     size_t method_len;
     char *path;
     size_t path_len;
-    size_t path_offset;
     char *query;
     size_t query_len;
-    size_t query_offset;
     char *version;
     size_t version_len;
-    size_t version_offset;
-    Header headers[HEADERS_MAX];
-    RequestParserHeaderLocation parser_header_location;
+    RequestHeader headers[HEADERS_MAX];
     uint8_t header_num;
     char *body;
     size_t body_len;
-    size_t body_offset;
 } Request;
 
 void Request_init(Request *self);
@@ -78,15 +73,15 @@ void Request_dealloc(Request *self);
 
 RequestParsingState Request_receive(Request *self, char *content, size_t len);
 
-char *Request_method(Request *self);
+#define Request_method(request) (request)->method
 
-char *Request_path(Request *self);
+#define Request_path(request) (request)->path
 
-char *Request_query(Request *self);
+#define Request_query(request) (request)->query
 
-char *Request_version(Request *self);
+#define Request_version(request) (request)->version
 
-Header *Request_headers(Request *self);
+RequestHeader *Request_headers(Request *self);
 
 size_t Request_content_len(Request *self);
 
