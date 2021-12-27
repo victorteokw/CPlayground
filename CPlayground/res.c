@@ -46,6 +46,21 @@ static PyObject *Res_get_headers(Res *self, void *closure) {
     return self->headers;
 }
 
+static PyObject *Res_get_body(Res *self, void *closure) {
+    if (self->response->body_len == 0) {
+        Py_RETURN_NONE;
+    }
+    if (!self->body) {
+        self->body = PyBytes_FromStringAndSize(self->response->body, self->response->body_len);
+    }
+    Py_INCREF(self->body);
+    return self->body;
+}
+
+static int Res_set_body(Res *self, PyObject *value, void *closure) {
+    return 0;
+}
+
 static PyGetSetDef Res_getset[] = {
     {"code", (getter)Res_get_code, (setter)Res_set_code, NULL, NULL},
     {"headers", (getter)Res_get_headers, NULL, NULL, NULL},

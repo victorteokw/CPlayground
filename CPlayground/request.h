@@ -5,6 +5,7 @@ extern "C" {
 #endif
 
 #include <stddef.h>
+#include <stdint.h>
 
 #define HEADERS_MAX 32
 #define INLINE_BUFFER_SIZE 4096

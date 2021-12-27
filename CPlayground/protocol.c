@@ -42,22 +42,22 @@ static PyObject *Protocol_connection_lost(Protocol *self, PyObject *exc) {
 }
 
 static PyObject *Protocol_data_received(Protocol *self, PyObject *data) {
-    char *content;
-    Py_ssize_t len;
-    PyBytes_AsStringAndSize(data, &content, &len);
-    RequestParsingState state = Request_receive(&(self->request), content, len);
-    Py_XDECREF(data);
-    if (state == RequestParsingStateDone) {
-        
-        // transport.write(bytes)
-        PyObject *transport_write = PyObject_GetAttrString(self->transport, "write");
-        PyObject_CallOneArg(transport_write, bytes);
-        Py_DECREF(transport_write);
-        // transport.close()
-        PyObject *transport_close = PyObject_GetAttrString(self->transport, "close");
-        PyObject_CallNoArgs(transport_close);
-        Py_DECREF(transport_close);
-    }
+//    char *content;
+//    Py_ssize_t len;
+//    PyBytes_AsStringAndSize(data, &content, &len);
+//    RequestParsingState state = Request_receive(&(self->request), content, len);
+//    Py_XDECREF(data);
+//    if (state == RequestParsingStateDone) {
+//        
+//        // transport.write(bytes)
+//        PyObject *transport_write = PyObject_GetAttrString(self->transport, "write");
+//        PyObject_CallOneArg(transport_write, bytes);
+//        Py_DECREF(transport_write);
+//        // transport.close()
+//        PyObject *transport_close = PyObject_GetAttrString(self->transport, "close");
+//        PyObject_CallNoArgs(transport_close);
+//        Py_DECREF(transport_close);
+//    }
     Py_RETURN_NONE;
 }
 

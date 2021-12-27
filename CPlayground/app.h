@@ -35,8 +35,6 @@ void App_use(App *self, void (*middleware)(Context *, PyObject *));
 
 void App_prepare(App *self);
 
-void App_
-
 #ifdef __cplusplus
 }
 #endif

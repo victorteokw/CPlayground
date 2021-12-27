@@ -1,4 +1,5 @@
 #include "req.h"
+#include "req_headers.h"
 
 
 PyObject *Req_new(PyTypeObject *type, Request *request) {
@@ -73,7 +74,7 @@ static PyObject *Req_get_version(Req *self, void *closure) {
 
 static PyObject *Req_get_headers(Req *self, void *closure) {
     if (!self->headers) {
-
+        self->headers = (PyObject *)ReqHeaders_new(self->request);
     }
     Py_INCREF(self->headers);
     return self->headers;
