@@ -1,13 +1,26 @@
-//
-//  res.h
-//  CPlayground
-//
-//  Created by Victor Teo on 2021/12/18.
-//
+#pragma once
 
-#ifndef res_h
-#define res_h
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#include <stdio.h>
+#include <Python.h>
+#include "response.h"
 
-#endif /* res_h */
+
+typedef struct {
+    PyObject_HEAD
+    Response *response;
+    PyObject *code;
+    PyObject *headers;
+    PyObject *body;
+} Res;
+
+PyObject *Res_new(PyTypeObject *type, Response *response);
+
+void Res_set_length_header(Res *self);
+
+#ifdef __cplusplus
+}
+#endif
+

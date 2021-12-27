@@ -20,6 +20,14 @@ static void Req_dealloc(Req *self) {
     Py_TYPE(self)->tp_free((PyObject *)self);
 }
 
+static PyObject *Req_get_args(Req *self, void *closure) {
+    if (!self->args) {
+
+    }
+    Py_INCREF(self->args);
+    return self->args;
+}
+
 static PyObject *Req_get_method(Req *self, void *closure) {
     if (!self->method) {
         self->method = PyUnicode_DecodeLatin1(self->request->method,
@@ -63,41 +71,32 @@ static PyObject *Req_get_version(Req *self, void *closure) {
     return self->version;
 }
 
+static PyObject *Req_get_headers(Req *self, void *closure) {
+    if (!self->headers) {
+
+    }
+    Py_INCREF(self->headers);
+    return self->headers;
+}
+
+static PyObject *Req_get_body(Req *self, void *closure) {
+    if (!self->body) {
+        self->body = PyBytes_FromStringAndSize(self->request->body, self->request->body_len);
+    }
+    Py_INCREF(self->body);
+    return self->body;
+}
+
 static PyGetSetDef Req_getset[] = {
-    {
-        "method",  /* name */
-        (getter)Req_get_method, /* getter */
-        NULL, /* setter */
-        NULL,  /* doc */
-        NULL /* closure */
-    },
-    {
-        "path",  /* name */
-        (getter)Req_get_path, /* getter */
-        NULL, /* setter */
-        NULL,  /* doc */
-        NULL /* closure */
-    },
-    {
-        "query",  /* name */
-        (getter)Req_get_query, /* getter */
-        NULL, /* setter */
-        NULL,  /* doc */
-        NULL /* closure */
-    },
-    {
-        "version",  /* name */
-        (getter)Req_get_version, /* getter */
-        NULL, /* setter */
-        NULL,  /* doc */
-        NULL /* closure */
-    },
+    {"args", (getter)Req_get_args, NULL, NULL, NULL},
+    {"method", (getter)Req_get_method, NULL, NULL, NULL},
+    {"path", (getter)Req_get_path, NULL, NULL, NULL},
+    {"query", (getter)Req_get_query, NULL, NULL, NULL},
+    {"version", (getter)Req_get_version, NULL, NULL, NULL},
+    {"headers", (getter)Req_get_headers, NULL, NULL, NULL},
+    {"body", (getter)Req_get_body, NULL, NULL, NULL},
     {NULL}
 };
-
-// args
-// headers
-// body
 
 static PyTypeObject ReqType = {
     PyObject_HEAD_INIT(NULL)

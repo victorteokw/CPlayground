@@ -6,7 +6,7 @@ extern "C" {
 
 #include <stddef.h>
 
-#define HEADERS_MAX 30
+#define HEADERS_MAX 32
 #define INLINE_BUFFER_SIZE 4096
 
 typedef struct {

@@ -1,15 +1,20 @@
 #pragma once
 
-#include <stdio.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "request.h"
-#include "req.h"
 #include "response.h"
-#include "res.h"
-#include "hashmap.h"
-#include "state.h"
+#include "duostate.h"
+
 
 typedef struct {
     Request *request;
     Response *response;
-    HashMap *hash_map;
+    Duostate *duostate;
 } Context;
+
+#ifdef __cplusplus
+}
+#endif
