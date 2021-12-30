@@ -1,13 +1,18 @@
-//
-//  state.h
-//  CPlayground
-//
-//  Created by Victor Teo on 2021/12/18.
-//
+#pragma once
 
-#ifndef state_h
-#define state_h
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#include <stdio.h>
+#include "duostate.h"
 
-#endif /* state_h */
+
+typedef struct {
+    Duostate *duostate;
+} State;
+
+PyObject *State_new(Duostate *duostate);
+
+#ifdef __cplusplus
+}
+#endif

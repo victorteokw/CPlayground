@@ -2,9 +2,11 @@
 #include "res_headers.h"
 
 
-PyObject *Res_new(PyTypeObject *type, Response *response) {
+static PyTypeObject ReqType;
+
+PyObject *Res_new(Response *response) {
     Res *self = NULL;
-    self = (Res *)type->tp_alloc(type, 0);
+    self = (Res *)ReqType.tp_alloc(&ReqType, 0);
     self->response = response;
     self->code = NULL;
     self->headers = NULL;
@@ -40,7 +42,7 @@ static int Res_set_code(Res *self, PyObject *value, void *closure) {
 
 static PyObject *Res_get_headers(Res *self, void *closure) {
     if (!self->headers) {
-        self->headers = ResHeaders_new(self->headers);
+        self->headers = (PyObject *)ResHeaders_new(&self->response->headers);
     }
     Py_INCREF(self->headers);
     return self->headers;

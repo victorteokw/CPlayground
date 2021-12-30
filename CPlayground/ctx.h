@@ -1,13 +1,28 @@
-//
-//  ctx.h
-//  CPlayground
-//
-//  Created by Victor Teo on 2021/12/18.
-//
+#pragma once
 
-#ifndef ctx_h
-#define ctx_h
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#include <stdio.h>
+#include <Python.h>
+#include "context.h"
+#include "req.h"
+#include "res.h"
+#include "state.h"
 
-#endif /* ctx_h */
+
+typedef struct {
+    PyObject_HEAD
+    Context *context;
+    Req *req;
+    Res *res;
+    State *state;
+} Ctx;
+
+PyObject *Ctx_new(Context *context);
+
+void Ctx_dealloc(Ctx *self);
+
+#ifdef __cplusplus
+}
+#endif

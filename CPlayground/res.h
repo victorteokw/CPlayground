@@ -16,7 +16,7 @@ typedef struct {
     PyObject *body;
 } Res;
 
-PyObject *Res_new(PyTypeObject *type, Response *response);
+PyObject *Res_new(Response *response);
 
 void Res_set_length_header(Res *self);
 

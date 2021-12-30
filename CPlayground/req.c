@@ -2,9 +2,11 @@
 #include "req_headers.h"
 
 
-PyObject *Req_new(PyTypeObject *type, Request *request) {
+static PyTypeObject ReqType;
+
+PyObject *Req_new(Request *request) {
     Req *self = NULL;
-    self = (Req *)type->tp_alloc(type, 0);
+    self = (Req *)ReqType.tp_alloc(&ReqType, 0);
     self->request = request;
     self->method = NULL;
     self->path = NULL;

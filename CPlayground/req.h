@@ -24,7 +24,7 @@ typedef struct {
     PyObject *body;
 } Req;
 
-PyObject *Req_new(PyTypeObject *type, Request *request);
+PyObject *Req_new(Request *request);
 
 static void Req_dealloc(Req *self);
 
